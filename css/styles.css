@@ -1,0 +1,725 @@
+/* ─────────────────────────────────────────────────────────
+   styles.css — Controle de Cargas
+   ───────────────────────────────────────────────────────── */
+
+/* ── 1. Reset básico ─────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── 2. Variáveis CSS ────────────────────────────────── */
+
+:root {
+  /* Paleta principal — azul-índigo */
+  --color-primary:        #4f6ef7;
+  --color-primary-dark:   #3b55d4;
+  --color-primary-light:  #eef1fe;
+
+  /* Paleta de estado */
+  --color-success:        #16a34a;
+  --color-success-bg:     #dcfce7;
+  --color-error:          #dc2626;
+  --color-error-bg:       #fee2e2;
+  --color-info:           #0369a1;
+  --color-info-bg:        #e0f2fe;
+
+  /* Exclusão */
+  --color-danger:         #dc2626;
+  --color-danger-dark:    #b91c1c;
+  --color-danger-light:   #fee2e2;
+
+  /* Neutros */
+  --color-bg:             #f5f7ff;
+  --color-surface:        #ffffff;
+  --color-border:         #dde3f7;
+  --color-text:           #1e2a45;
+  --color-text-muted:     #6b7a99;
+  --color-text-light:     #9ba8c4;
+  --color-placeholder:    #b0bbd8;
+
+  /* Tipografia */
+  --font-family:          'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-size-base:       1rem;
+  --font-size-sm:         0.875rem;
+  --font-size-xs:         0.75rem;
+  --font-size-lg:         1.125rem;
+  --font-size-xl:         1.5rem;
+  --font-size-2xl:        2rem;
+  --line-height:          1.6;
+
+  /* Espaçamento */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Bordas */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --border:    1px solid var(--color-border);
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(79, 110, 247, 0.08),
+               0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(79, 110, 247, 0.1),
+               0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(79, 110, 247, 0.14),
+               0 4px 8px rgba(0, 0, 0, 0.06);
+
+  /* Transições */
+  --transition: 0.18s ease;
+
+  /* Layout */
+  --max-width: 900px;
+}
+
+/* ── 3. Base ─────────────────────────────────────────── */
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 4. Utilitários ──────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ── 5. Layout principal ─────────────────────────────── */
+
+.wrapper {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+main {
+  flex: 1;
+  padding: var(--space-8) 0 var(--space-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── 6. Cabeçalho ────────────────────────────────────── */
+
+.site-header {
+  background: var(--color-surface);
+  border-bottom: var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5) 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.site-header .wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.header-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.header-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ── 7. Card / Seção ─────────────────────────────────── */
+
+.card {
+  background: var(--color-surface);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+/* ── 8. Formulário ───────────────────────────────────── */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), box-shadow var(--transition),
+              background-color var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+  height: 46px;
+}
+
+.form-input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.form-input:hover {
+  border-color: #b0bce8;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.18);
+}
+
+.form-input.input-error {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+.form-input.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+}
+
+.field-error {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  min-height: 1em;
+  font-weight: 500;
+}
+
+/* Botão submit alinhado na grade */
+.form-submit {
+  align-self: end;
+}
+
+/* ── 9. Botões ───────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition), box-shadow var(--transition),
+              transform var(--transition);
+  white-space: nowrap;
+  height: 46px;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Botão primário */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(79, 110, 247, 0.35);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: 0 4px 10px rgba(79, 110, 247, 0.4);
+}
+
+/* Botão de exclusão */
+.btn-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family);
+  font-weight: 600;
+  color: var(--color-danger);
+  background: var(--color-danger-light);
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+  white-space: nowrap;
+  height: 30px;
+}
+
+.btn-delete:hover {
+  background-color: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+
+.btn-delete:focus-visible {
+  outline: 3px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+/* ── 10. Último registro ─────────────────────────────── */
+
+.last-record {
+  border-left: 4px solid var(--color-primary);
+  background: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+}
+
+.last-record-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.last-record-value {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* Quando não há registro para o exercício */
+.last-record[data-state="empty"] .last-record-value {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── 11. Filtro ──────────────────────────────────────── */
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.filter-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.filter-input {
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  height: 40px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.filter-input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.18);
+}
+
+/* ── 12. Tabela do histórico ─────────────────────────── */
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-md);
+  border: var(--border);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.history-table thead {
+  background: var(--color-bg);
+}
+
+.history-table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  border-bottom: var(--border);
+  white-space: nowrap;
+}
+
+.history-table td {
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text);
+  border-bottom: var(--border);
+  vertical-align: middle;
+}
+
+.history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.history-table tbody tr {
+  transition: background-color var(--transition);
+}
+
+.history-table tbody tr:hover {
+  background-color: var(--color-primary-light);
+}
+
+.td-action {
+  text-align: center;
+  width: 80px;
+}
+
+/* ── 13. Mensagens de estado vazio ───────────────────── */
+
+.empty-message {
+  text-align: center;
+  padding: var(--space-10) var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.empty-message-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-3);
+  opacity: 0.5;
+}
+
+.empty-message p {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+/* ── 14. Mensagem de status ──────────────────────────── */
+
+.status-message {
+  position: fixed;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  max-width: calc(100vw - var(--space-8));
+  text-align: center;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.status-success {
+  background: var(--color-success);
+  color: #fff;
+}
+
+.status-error {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.status-info {
+  background: var(--color-info);
+  color: #fff;
+}
+
+/* ── 15. Rodapé ──────────────────────────────────────── */
+
+.site-footer {
+  background: var(--color-surface);
+  border-top: var(--border);
+  padding: var(--space-4) 0;
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-light);
+}
+
+/* ── 16. Responsividade — Mobile first ───────────────── */
+
+/* ► Telas menores que 640px (celular) */
+@media (max-width: 639px) {
+  :root {
+    --space-5: 1rem;
+    --space-6: 1.25rem;
+  }
+
+  .card {
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: none;
+    border-top: var(--border);
+    border-bottom: var(--border);
+  }
+
+  main {
+    gap: var(--space-4);
+    padding: var(--space-4) 0 var(--space-12);
+  }
+
+  .wrapper {
+    padding: 0;
+  }
+
+  /* Formulário empilhado no celular */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .form-submit {
+    align-self: stretch;
+  }
+
+  .btn-primary {
+    width: 100%;
+    height: 52px;
+    font-size: var(--font-size-lg);
+  }
+
+  .form-input {
+    height: 52px;
+    font-size: var(--font-size-lg);
+  }
+
+  /* Histórico como cartões no celular */
+  .table-wrapper {
+    border: none;
+    border-radius: 0;
+  }
+
+  .history-table thead {
+    display: none;
+  }
+
+  .history-table,
+  .history-table tbody,
+  .history-table tr,
+  .history-table td {
+    display: block;
+  }
+
+  .history-table tbody tr {
+    background: var(--color-surface);
+    border: var(--border);
+    border-radius: var(--radius-md);
+    margin: 0 var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .history-table tbody tr:hover {
+    background-color: var(--color-surface);
+  }
+
+  .history-table td {
+    padding: var(--space-1) 0;
+    border-bottom: none;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+  }
+
+  .history-table td::before {
+    content: attr(data-label);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    display: block;
+  }
+
+  .td-action {
+    text-align: left;
+    width: auto;
+    margin-top: var(--space-2);
+  }
+
+  .btn-delete {
+    height: 36px;
+    padding: 0 var(--space-4);
+    font-size: var(--font-size-sm);
+  }
+
+  .header-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .site-header .wrapper {
+    padding: 0 var(--space-4);
+  }
+
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 var(--space-4);
+  }
+
+  .section-title {
+    padding: 0 var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-title:first-child {
+    padding-top: 0;
+  }
+
+  .filter-input {
+    height: 48px;
+    font-size: var(--font-size-base);
+  }
+
+  .last-record {
+    margin: 0 var(--space-4);
+  }
+
+  .empty-message {
+    padding: var(--space-8) var(--space-4);
+  }
+}
+
+/* ► Telas entre 640px e 900px (tablet) */
+@media (min-width: 640px) and (max-width: 899px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .form-submit {
+    grid-column: 1 / -1;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
+
+/* ► Telas maiores que 900px (desktop) */
+@media (min-width: 900px) {
+  .form-grid {
+    grid-template-columns: 2fr 1fr 1fr auto;
+  }
+}

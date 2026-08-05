@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Registre suas séries de academia e acompanhe suas cargas anteriores por exercício." />
+  <title>Controle de cargas</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       Cabeçalho
+  ════════════════════════════════════════════ -->
+  <header class="site-header" role="banner">
+    <div class="wrapper">
+      <div class="header-icon" aria-hidden="true">
+        <!-- Ícone: haltere estilizado com SVG inline -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 4v16M18 4v16M3 8h3M18 8h3M3 16h3M18 16h3M6 8h12M6 16h12"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="header-title">Controle de cargas</h1>
+        <p class="header-subtitle">Registre suas séries e acompanhe suas cargas anteriores.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       Conteúdo principal
+  ════════════════════════════════════════════ -->
+  <main id="main-content">
+    <div class="wrapper">
+
+      <!-- ── Formulário de registro ─────────────── -->
+      <section class="card" aria-labelledby="form-title">
+        <h2 class="section-title" id="form-title">Registrar série</h2>
+
+        <form id="record-form" novalidate autocomplete="off">
+
+          <!-- Sugestões de exercícios (datalist) -->
+          <datalist id="exercise-suggestions"></datalist>
+
+          <div class="form-grid">
+
+            <!-- Campo: Exercício -->
+            <div class="form-field">
+              <label class="form-label" for="exercise">Exercício</label>
+              <input
+                id="exercise"
+                name="exercise"
+                type="text"
+                class="form-input"
+                list="exercise-suggestions"
+                placeholder="Supino reto"
+                maxlength="80"
+                autocomplete="off"
+                required
+                aria-required="true"
+                aria-describedby="error-exercise"
+              />
+              <span id="error-exercise" class="field-error hidden" aria-live="polite"></span>
+            </div>
+
+            <!-- Campo: Carga -->
+            <div class="form-field">
+              <label class="form-label" for="weight">Carga (kg)</label>
+              <input
+                id="weight"
+                name="weight"
+                type="number"
+                class="form-input"
+                placeholder="22,5"
+                min="0"
+                step="0.5"
+                autocomplete="off"
+                required
+                aria-required="true"
+                aria-describedby="error-weight"
+              />
+              <span id="error-weight" class="field-error hidden" aria-live="polite"></span>
+            </div>
+
+            <!-- Campo: Repetições -->
+            <div class="form-field">
+              <label class="form-label" for="reps">Repetições</label>
+              <input
+                id="reps"
+                name="reps"
+                type="number"
+                class="form-input"
+                placeholder="8"
+                min="1"
+                max="999"
+                step="1"
+                autocomplete="off"
+                required
+                aria-required="true"
+                aria-describedby="error-reps"
+              />
+              <span id="error-reps" class="field-error hidden" aria-live="polite"></span>
+            </div>
+
+            <!-- Botão de submissão -->
+            <div class="form-field form-submit">
+              <button
+                id="btn-save"
+                type="submit"
+                class="btn btn-primary"
+                aria-label="Salvar série no histórico"
+              >
+                Salvar série
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </section>
+
+      <!-- ── Último registro ────────────────────── -->
+      <div
+        id="last-record-box"
+        class="last-record hidden"
+        aria-live="polite"
+        aria-atomic="true"
+        role="status"
+      >
+        <p class="last-record-label">Último registro</p>
+        <p id="last-record-text" class="last-record-value"></p>
+      </div>
+
+      <!-- ── Histórico ──────────────────────────── -->
+      <section class="card" aria-labelledby="history-title">
+        <h2 class="section-title" id="history-title">Histórico</h2>
+
+        <!-- Filtro -->
+        <div class="filter-row">
+          <label class="filter-label" for="filter-input">Filtrar por exercício:</label>
+          <input
+            id="filter-input"
+            type="search"
+            class="filter-input"
+            placeholder="Digite para filtrar…"
+            autocomplete="off"
+            aria-label="Filtrar histórico por exercício"
+          />
+        </div>
+
+        <!-- Mensagem: nenhum registro ainda -->
+        <div id="empty-history" class="empty-message" role="status" aria-live="polite">
+          <div class="empty-message-icon" aria-hidden="true">🏋️</div>
+          <p>Nenhuma série registrada ainda.<br />Preencha o formulário acima para começar.</p>
+        </div>
+
+        <!-- Mensagem: filtro sem resultados -->
+        <div id="empty-filter" class="empty-message hidden" role="status" aria-live="polite">
+          <div class="empty-message-icon" aria-hidden="true">🔍</div>
+          <p>Nenhum registro encontrado para este filtro.</p>
+        </div>
+
+        <!-- Tabela do histórico -->
+        <div class="table-wrapper">
+          <table
+            id="history-table"
+            class="history-table hidden"
+            aria-label="Histórico de cargas e repetições"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Data</th>
+                <th scope="col">Horário</th>
+                <th scope="col">Exercício</th>
+                <th scope="col">Carga</th>
+                <th scope="col">Repetições</th>
+                <th scope="col"><span class="sr-only">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <!-- Preenchido dinamicamente por app.js -->
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </div><!-- /.wrapper -->
+  </main>
+
+  <!-- ── Mensagem de status global ─────────────── -->
+  <div
+    id="status-message"
+    class="status-message hidden"
+    aria-live="assertive"
+    aria-atomic="true"
+  ></div>
+
+  <!-- ═══════════════════════════════════════════
+       Rodapé
+  ════════════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="wrapper">
+      <p>Controle de cargas &mdash; dados salvos localmente no seu navegador.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts (ordem importa: utils → storage → app) -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
