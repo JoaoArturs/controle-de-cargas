@@ -12,9 +12,15 @@ Permitir que o usuário registre, consulte e acompanhe o histórico de séries r
 
 ## Funcionalidades
 
-- Registrar exercício, carga (kg) e repetições.
+- Registrar exercício, carga (kg), repetições e **número de séries** iguais (ex.: 3 séries de 40 kg × 8 num único registro).
+- Marcar uma série como **aquecimento** (opcional); aquecimentos ficam sinalizados e são tratados à parte das séries de trabalho.
+- **Exportar** todos os registros para um arquivo `.json` (backup) e **importar** de volta, mesclando sem duplicar.
 - Data e horário salvos automaticamente no momento do registro.
-- Consulta do histórico completo, do mais recente para o mais antigo.
+- **Gráficos de progresso** (quando há dados suficientes): evolução do 1RM estimado por exercício, volume por semana e comparação da semana atual com a anterior.
+- **Edição** de registros já salvos (além da exclusão).
+- **Tema claro/escuro**, seguindo o sistema ou alternado manualmente.
+- Sugestões de exercícios comuns já no campo, sem precisar digitar (os incomuns continuam digitados).
+- Consulta do histórico completo, do mais recente para o mais antigo, **agrupado por dia** (com o dia da semana, ex.: "Segunda-feira · 16/11/2026").
 - Filtro do histórico por nome de exercício (em tempo real).
 - Exibição do último registro de um exercício ao digitá-lo no formulário.
 - Sugestões automáticas de exercícios já cadastrados.
@@ -34,9 +40,9 @@ controle-cargas/
 ├── js/
 │   ├── app.js          → Lógica da aplicação, DOM e eventos
 │   ├── storage.js      → Acesso ao localStorage (CRUD)
+│   ├── charts.js       → Agregação dos dados e gráficos em SVG
+│   ├── exercises.js    → Lista de exercícios comuns (sugestões)
 │   └── utils.js        → Funções auxiliares puras
-├── assets/
-│   └── icons/          → Pasta reservada para ícones futuros
 └── README.md
 ```
 
@@ -91,6 +97,8 @@ O valor é um array JSON com objetos no seguinte formato:
   "exercise": "Supino reto",
   "weight": 22.5,
   "repetitions": 8,
+  "sets": 3,
+  "warmup": false,
   "createdAt": "2026-08-05T18:00:00.000Z"
 }
 ```
@@ -123,22 +131,17 @@ Acesse as configurações de privacidade do seu navegador e limpe os dados do si
 
 - Os dados ficam armazenados apenas no navegador e no dispositivo utilizado.
 - Não há sincronização entre dispositivos ou navegadores diferentes.
-- Não há backup automático — limpar o `localStorage` apaga todos os registros.
-- Não há exportação ou importação de dados.
-- Não há histórico visual (gráficos ou progressão).
+- O backup é manual (botões Exportar/Importar); não há sincronização automática.
 - Não há autenticação — qualquer pessoa com acesso ao dispositivo pode ver e excluir os dados.
 
 ---
 
 ## Possíveis melhorias futuras
 
-- Exportar registros para CSV ou JSON.
-- Importar registros de um arquivo.
-- Visualização gráfica da progressão de carga por exercício.
-- Agrupamento por data ou sessão de treino.
+- Exportar registros também para CSV.
+- Agrupamento por data ou sessão de treino (séries numeradas).
 - Fichas de treino com exercícios predefinidos.
 - Cronômetro de descanso entre séries.
-- Tema escuro (dark mode).
 - Atalhos de teclado.
 - Sincronização via conta pessoal (backend opcional).
 - Instalação como PWA (Progressive Web App).

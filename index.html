@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Registre suas séries de academia e acompanhe suas cargas anteriores por exercício." />
   <title>Controle de cargas</title>
+  <!-- Aplica o tema salvo antes da renderização para evitar flash. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('gymTheme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) { /* ignora ambiente sem localStorage */ }
+    })();
+  </script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -24,6 +35,24 @@
         <h1 class="header-title">Controle de cargas</h1>
         <p class="header-subtitle">Registre suas séries e acompanhe suas cargas anteriores.</p>
       </div>
+
+      <button
+        id="theme-toggle"
+        type="button"
+        class="theme-toggle"
+        aria-label="Alternar tema claro/escuro"
+        title="Alternar tema claro/escuro"
+      >
+        <!-- Ícone sol (tema claro ativo) -->
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" />
+        </svg>
+        <!-- Ícone lua (tema escuro ativo) -->
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -102,6 +131,25 @@
               <span id="error-reps" class="field-error hidden" aria-live="polite"></span>
             </div>
 
+            <!-- Campo: Séries -->
+            <div class="form-field">
+              <label class="form-label" for="sets">Séries</label>
+              <input
+                id="sets"
+                name="sets"
+                type="number"
+                class="form-input"
+                value="1"
+                min="1"
+                max="99"
+                step="1"
+                inputmode="numeric"
+                autocomplete="off"
+                aria-describedby="error-sets sets-hint"
+              />
+              <span id="error-sets" class="field-error hidden" aria-live="polite"></span>
+            </div>
+
             <!-- Botão de submissão -->
             <div class="form-field form-submit">
               <button
@@ -112,8 +160,24 @@
               >
                 Salvar série
               </button>
+              <button
+                id="btn-cancel-edit"
+                type="button"
+                class="btn btn-secondary hidden"
+              >
+                Cancelar
+              </button>
             </div>
 
+          </div>
+
+          <!-- Tipo de série -->
+          <div class="form-extra">
+            <label class="checkbox-field" for="warmup">
+              <input id="warmup" name="warmup" type="checkbox" />
+              <span>Série de aquecimento</span>
+            </label>
+            <span class="checkbox-hint">Aquecimentos ficam marcados e não entram nos gráficos de progresso.</span>
           </div>
         </form>
       </section>
@@ -130,9 +194,79 @@
         <p id="last-record-text" class="last-record-value"></p>
       </div>
 
+      <!-- ── Progresso / Gráficos ───────────────── -->
+      <section id="progress-section" class="card hidden" aria-labelledby="progress-title">
+        <h2 class="section-title" id="progress-title">Progresso</h2>
+
+        <!-- Seletor de exercício -->
+        <div class="progress-control">
+          <label class="filter-label" for="chart-exercise">Exercício:</label>
+          <select id="chart-exercise" class="progress-select" aria-label="Escolher exercício para os gráficos"></select>
+        </div>
+
+        <!-- Mensagem: ainda sem dados suficientes -->
+        <div id="progress-empty" class="empty-message hidden" role="status" aria-live="polite">
+          <div class="empty-message-icon" aria-hidden="true">📈</div>
+          <p>Registre pelo menos duas sessões deste exercício<br />para ver a evolução em gráficos.</p>
+        </div>
+
+        <div id="progress-content">
+          <!-- Comparação: semana atual vs anterior -->
+          <div class="stat-row" id="stat-row" aria-label="Comparação da semana atual com a anterior">
+            <div class="stat-tile">
+              <p class="stat-label">Volume (semana atual)</p>
+              <p class="stat-value" id="stat-volume">—</p>
+              <p class="stat-delta" id="stat-volume-delta"></p>
+            </div>
+            <div class="stat-tile">
+              <p class="stat-label">Melhor 1RM estimado</p>
+              <p class="stat-value" id="stat-best">—</p>
+              <p class="stat-delta" id="stat-best-delta"></p>
+            </div>
+            <div class="stat-tile">
+              <p class="stat-label">Séries de trabalho</p>
+              <p class="stat-value" id="stat-sets">—</p>
+              <p class="stat-delta stat-delta-muted">nesta semana</p>
+            </div>
+          </div>
+
+          <!-- Gráfico: progressão de 1RM -->
+          <div class="chart-block">
+            <h3 class="chart-title">Evolução do 1RM estimado</h3>
+            <p class="chart-caption">Melhor série de trabalho de cada dia de treino (kg).</p>
+            <div class="chart-holder" id="chart-progression"></div>
+          </div>
+
+          <!-- Gráfico: volume semanal -->
+          <div class="chart-block">
+            <h3 class="chart-title">Volume por semana</h3>
+            <p class="chart-caption">Soma de carga × repetições das séries de trabalho.</p>
+            <div class="chart-holder" id="chart-volume"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- ── Histórico ──────────────────────────── -->
       <section class="card" aria-labelledby="history-title">
         <h2 class="section-title" id="history-title">Histórico</h2>
+
+        <!-- Backup dos dados -->
+        <div class="history-toolbar">
+          <button type="button" id="btn-export" class="btn btn-secondary">
+            Exportar backup
+          </button>
+          <button type="button" id="btn-import" class="btn btn-secondary">
+            Importar backup
+          </button>
+          <input
+            id="import-file"
+            type="file"
+            accept="application/json,.json"
+            class="hidden"
+            aria-hidden="true"
+            tabindex="-1"
+          />
+        </div>
 
         <!-- Filtro -->
         <div class="filter-row">
@@ -168,10 +302,10 @@
           >
             <thead>
               <tr>
-                <th scope="col">Data</th>
                 <th scope="col">Horário</th>
                 <th scope="col">Exercício</th>
                 <th scope="col">Carga</th>
+                <th scope="col">Séries</th>
                 <th scope="col">Repetições</th>
                 <th scope="col"><span class="sr-only">Ações</span></th>
               </tr>
@@ -204,9 +338,11 @@
     </div>
   </footer>
 
-  <!-- Scripts (ordem importa: utils → storage → app) -->
+  <!-- Scripts (ordem importa: utils → exercises → storage → charts → app) -->
   <script src="js/utils.js"></script>
+  <script src="js/exercises.js"></script>
   <script src="js/storage.js"></script>
+  <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 
 </body>

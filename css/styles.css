@@ -80,8 +80,101 @@
   /* Transições */
   --transition: 0.18s ease;
 
+  /* Gráficos */
+  --chart-accent:  #4f6ef7;
+  --chart-grid:    #e6ebfa;
+  --chart-axis:    #6b7a99;
+
+  /* Variação (deltas) */
+  --delta-up:      #16a34a;
+  --delta-down:    #dc2626;
+
   /* Layout */
   --max-width: 900px;
+
+  color-scheme: light;
+}
+
+/* ── 2b. Tema escuro ─────────────────────────────────── */
+
+/* Seleção explícita pelo usuário */
+:root[data-theme="dark"] {
+  --color-primary:        #6d87ff;
+  --color-primary-dark:   #5570e6;
+  --color-primary-light:  #1f2942;
+
+  --color-success:        #22c55e;
+  --color-success-bg:     #0f2a1a;
+  --color-error:          #f87171;
+  --color-error-bg:       #3a1515;
+  --color-info:           #38bdf8;
+  --color-info-bg:        #0c2a3a;
+
+  --color-danger:         #f87171;
+  --color-danger-dark:    #ef4444;
+  --color-danger-light:   #3a1515;
+
+  --color-bg:             #0f1420;
+  --color-surface:        #171d2b;
+  --color-border:         #2a3348;
+  --color-text:           #e7ecf7;
+  --color-text-muted:     #9aa7c2;
+  --color-text-light:     #6b7899;
+  --color-placeholder:    #5b6683;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  --chart-accent:  #6d87ff;
+  --chart-grid:    #2a3348;
+  --chart-axis:    #9aa7c2;
+
+  --delta-up:      #4ade80;
+  --delta-down:    #f87171;
+
+  color-scheme: dark;
+}
+
+/* Preferência do sistema, quando o usuário não escolheu manualmente */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary:        #6d87ff;
+    --color-primary-dark:   #5570e6;
+    --color-primary-light:  #1f2942;
+
+    --color-success:        #22c55e;
+    --color-success-bg:     #0f2a1a;
+    --color-error:          #f87171;
+    --color-error-bg:       #3a1515;
+    --color-info:           #38bdf8;
+    --color-info-bg:        #0c2a3a;
+
+    --color-danger:         #f87171;
+    --color-danger-dark:    #ef4444;
+    --color-danger-light:   #3a1515;
+
+    --color-bg:             #0f1420;
+    --color-surface:        #171d2b;
+    --color-border:         #2a3348;
+    --color-text:           #e7ecf7;
+    --color-text-muted:     #9aa7c2;
+    --color-text-light:     #6b7899;
+    --color-placeholder:    #5b6683;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+    --chart-accent:  #6d87ff;
+    --chart-grid:    #2a3348;
+    --chart-axis:    #9aa7c2;
+
+    --delta-up:      #4ade80;
+    --delta-down:    #f87171;
+
+    color-scheme: dark;
+  }
 }
 
 /* ── 3. Base ─────────────────────────────────────────── */
@@ -186,6 +279,55 @@ main {
   margin-top: var(--space-1);
 }
 
+.theme-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition),
+              background-color var(--transition);
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Mostra o ícone do tema ativo. */
+.theme-toggle .icon-moon { display: none; }
+.theme-toggle .icon-sun  { display: block; }
+
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-sun  { display: none; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun  { display: none; }
+}
+
 /* ── 7. Card / Seção ─────────────────────────────────── */
 
 .card {
@@ -219,7 +361,7 @@ main {
 
 .form-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
   gap: var(--space-4);
   align-items: start;
 }
@@ -358,6 +500,84 @@ main {
 .btn-delete:focus-visible {
   outline: 3px solid var(--color-danger);
   outline-offset: 2px;
+}
+
+/* Botão secundário (backup) */
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-border);
+  height: 40px;
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+/* ── 9b. Tipo de série (checkbox) ────────────────────── */
+
+.form-extra {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.checkbox-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.checkbox-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* ── 9c. Barra de backup ─────────────────────────────── */
+
+.history-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  margin-bottom: var(--space-4);
+}
+
+/* ── 9d. Selo de aquecimento ─────────────────────────── */
+
+.badge-warmup {
+  display: inline-block;
+  padding: 1px var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-info);
+  background: var(--color-info-bg);
+  border-radius: var(--radius-sm);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.history-table tbody tr.row-warmup td:not(.td-action) {
+  color: var(--color-text-muted);
 }
 
 /* ── 10. Último registro ─────────────────────────────── */
@@ -555,6 +775,195 @@ main {
   color: var(--color-text-light);
 }
 
+/* ── 15b. Edição / botões de linha ───────────────────── */
+
+.form-submit {
+  gap: var(--space-2);
+}
+
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition),
+              border-color var(--transition);
+  white-space: nowrap;
+  height: 30px;
+  margin-right: var(--space-2);
+}
+
+.btn-edit:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.btn-edit:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.td-action {
+  white-space: nowrap;
+  width: 160px;
+}
+
+.history-table tbody tr.row-editing {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  background-color: var(--color-primary-light);
+}
+
+/* Cabeçalho de grupo por dia */
+.history-table tbody tr.day-header td {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border);
+}
+
+.history-table tbody tr.day-header:hover td {
+  background: var(--color-bg);
+}
+
+/* ── 15c. Progresso / gráficos ───────────────────────── */
+
+.progress-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.progress-select {
+  flex: 1;
+  max-width: 320px;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  height: 40px;
+  cursor: pointer;
+}
+
+.progress-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.18);
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.stat-tile {
+  background: var(--color-bg);
+  border: var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.stat-delta {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  margin-top: var(--space-2);
+}
+
+.stat-delta-up    { color: var(--delta-up); }
+.stat-delta-down  { color: var(--delta-down); }
+.stat-delta-muted { color: var(--color-text-light); font-weight: 500; }
+
+.chart-block {
+  margin-top: var(--space-6);
+}
+
+.chart-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.chart-caption {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.chart-holder {
+  width: 100%;
+  overflow: hidden;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+}
+
+.chart-axis {
+  fill: var(--chart-axis);
+  font-family: var(--font-family);
+  font-size: 11px;
+}
+
+.chart-line {
+  stroke: var(--chart-accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-dot {
+  fill: var(--chart-accent);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+}
+
+.chart-bar {
+  fill: var(--chart-accent);
+}
+
 /* ── 16. Responsividade — Mobile first ───────────────── */
 
 /* ► Telas menores que 640px (celular) */
@@ -652,6 +1061,27 @@ main {
     display: block;
   }
 
+  /* Cabeçalho de dia no celular: faixa simples, não um cartão */
+  .history-table tbody tr.day-header {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: var(--space-4) var(--space-4) var(--space-1);
+    padding: 0;
+  }
+
+  .history-table tbody tr.day-header td {
+    padding: var(--space-2) 0;
+    border-bottom: 2px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+  }
+
+  .history-table tbody tr.day-header td::before {
+    display: none;
+  }
+
   .td-action {
     text-align: left;
     width: auto;
@@ -678,6 +1108,15 @@ main {
     padding: 0 var(--space-4);
   }
 
+  .history-toolbar {
+    padding: 0 var(--space-4);
+    justify-content: stretch;
+  }
+
+  .history-toolbar .btn-secondary {
+    flex: 1;
+  }
+
   .section-title {
     padding: 0 var(--space-4);
     margin-bottom: var(--space-4);
@@ -698,6 +1137,37 @@ main {
 
   .empty-message {
     padding: var(--space-8) var(--space-4);
+  }
+
+  /* Progresso no celular */
+  .progress-control {
+    padding: 0 var(--space-4);
+  }
+
+  .progress-select {
+    max-width: none;
+  }
+
+  .stat-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: 0 var(--space-4);
+  }
+
+  .chart-block {
+    padding: 0 var(--space-4);
+  }
+
+  /* Botões do formulário ocupam a largura toda */
+  .form-submit .btn {
+    width: 100%;
+    height: 48px;
+    font-size: var(--font-size-base);
+  }
+
+  .form-submit .btn-primary {
+    height: 52px;
+    font-size: var(--font-size-lg);
   }
 }
 
@@ -720,6 +1190,6 @@ main {
 /* ► Telas maiores que 900px (desktop) */
 @media (min-width: 900px) {
   .form-grid {
-    grid-template-columns: 2fr 1fr 1fr auto;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
   }
 }
